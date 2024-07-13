@@ -11,6 +11,12 @@ import createRecipeTable from './models/recipe.js';
 import userRoutes from './routes/user.js';
 import recipeRoutes from './routes/recipe.js';
 
+import dotenv from 'dotenv';
+
+/// dotenv
+
+dotenv.config();
+
 // set port
 const PORT = process.env.PORT || 5009;
 
