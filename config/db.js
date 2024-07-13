@@ -15,20 +15,23 @@ const pool = mysql.createPool({
 console.log('MySQL Pool created successfully');
 
 // Create query
-const query = async (sql, values) => {
-    const connection = await pool.getConnection();
-    try {
-        const [results] = await connection.query(sql, values);
-        return results;
-    } catch (err) {
-        return err;
-    } finally {
-        if (connection) {
-            connection.release();
-        }
-    }
-};
+// const query = async (sql, values) => {
+//     const connection = await pool.getConnection();
+//     try {
+//         const [results] = await connection.query(sql, values);
+//         return results;
+//     } catch (err) {
+//         return err;
+//     } finally {
+//         if (connection) {
+//             connection.release();
+//         }
+//     }
+// };
 
-export default {query,pool};
+const result = await pool.query("SELECT * FROM users")
+console.log(result);
+
+export default pool;
 // export default query;
 

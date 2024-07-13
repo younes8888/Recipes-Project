@@ -14,6 +14,7 @@ const secretKey = 'Bearer 123';
 const userControllers = {
     register: async (req, res) => {
         try {
+            const {email, password} = req.body;
 
         //validate email
         if(!validateEmail(email)){
@@ -40,7 +41,8 @@ const userControllers = {
 
         res.status(201).send('registered successfully');
     } catch (error) {
-            res.status(500).send({error: 'Failed to register'})
+        console.error(error);
+        res.status(500).send({error: 'Failed to register'});
     }},
 
     login: async (req, res) => {
@@ -57,12 +59,14 @@ const userControllers = {
 
             const passwordMatch = await bcrypt.compare(password, matchPasswords(password, findUser.password))
             if(passwordMatch){
-                res.status(200).send('Logged in successfully')
+                const token = jwt.sign({email}, secretKey)
+                res.status(200).send('Logged in successfully', token)
             }   else {
                 res.status(401).send({error: 'Invalid email or password'});
             }
-        } catch{
-            res.status(500).send({error: 'Login  failed'})
+        } catch (error){
+            console.error(error);
+            res.status(500).send({error: 'Login  failed'});
         }
     },
 
@@ -76,7 +80,8 @@ const userControllers = {
             jwt.verify(token,secretKey);
             res.status(200).send({message: " logged out successfully"})
 
-       } catch {
+       } catch (error) {
+            console.error(error)
             res.status(401).send({message: 'Invalid token'})
        }
     },
