@@ -30,5 +30,5 @@ const query = async (sql, values) => {
 };
 
 export default {query,pool};
-// export default pool;
+// export default query;
 

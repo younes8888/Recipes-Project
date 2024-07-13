@@ -14,31 +14,47 @@ const secretKey = 'Bearer 123';
 const userControllers = {
     register: async (req, res) => {
         try {
-            //Check User
-            const {email, password} = req.body;
-            const findUser = users.find((data) => email == data.email);
-            if(findUser) {
+
+        //validate email
+        if(!validateEmail(email)){
+            return res.status(400).send({error: 'Invalid email'})
+        }
+        //validate password
+
+        if(!validatePassword(password)){
+            return res.status(400).send({error:"invalid password"})
+        }
+        //check if user already exists
+
+        const findUser = users.find((data) => email == data.email);
+         if(findUser) {
                 res.status(400).send("User already exists")
             }
-            //Hash password
-            users.push({email, password: hashPassword});
-            console.log(users);
-            res.status(201).send("Registered successfully")
-        }catch (error) {
+
+        // hash password
+        const hashedPassword = await hashPassword(password);
         
-            res.status(500).send({error: 'failed to register'})
-        }
-    },
+        //store user
+        users.push({email, password: hashedPassword});
+        console.log(users);
+
+        res.status(201).send('registered successfully');
+    } catch (error) {
+            res.status(500).send({error: 'Failed to register'})
+    }},
 
     login: async (req, res) => {
         try{
             const {email, password} = req.body;
+
             //Finder user
             const findUser = users.find((data)=> email == data.email);
             if(!findUser){
                 res.status(400).send("wrong email or password");
             }
             
+            //compare password
+
             const passwordMatch = await bcrypt.compare(password, matchPasswords(password, findUser.password))
             if(passwordMatch){
                 res.status(200).send('Logged in successfully')
