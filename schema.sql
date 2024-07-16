@@ -5,20 +5,18 @@ USE recipes_app;
 -- Users Table
 
 CREATE TABLE Users (
-id: INT, Primary Key, Auto Increment,
-email: VARCHAR(255), Unique,
-password: VARCHAR(255)
+id INT AUTO_INCREMENT Primary Key,
+email VARCHAR(255) UNIQUE,
+password VARCHAR(255)
 );
-
-
 
 -- Recipes Table
 
 CREATE TABLE Recipes (
-id: INT, Primary Key, Auto Increment,
-title: VARCHAR(255),
-ingredients: TEXT,
-instructions: TEXT
+id INT PRIMARY KEY AUTO_INCREMENT,
+title VARCHAR(255),
+ingredients TEXT,
+instructions TEXT
 );
 
 INSERT INTO Users (email,password)

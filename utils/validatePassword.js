@@ -9,12 +9,10 @@
 
 const validatePassword = (password) => {
     const pattern =
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,16}$/;
-    if (pattern.test(password)) {
-        return true;
-    } else {
-        return false;
-    }
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*'\-])[A-Za-z\d!@#$%^&*'\-]{6,16}$/;
+        const noWhiteSpace = /^\S+$/;
+      return pattern.test(password) && noWhiteSpace.test(password)
+
 };
 
 export default validatePassword;

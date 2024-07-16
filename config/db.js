@@ -1,8 +1,16 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
 
+
+
+//Path
+const __filename = fileURLToPath(import.meta.url);
+const PATH = dirname(__filename);
+
+dotenv.config({ path: path.join(PATH, '../.env')});
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -15,23 +23,21 @@ const pool = mysql.createPool({
 console.log('MySQL Pool created successfully');
 
 // Create query
-// const query = async (sql, values) => {
-//     const connection = await pool.getConnection();
-//     try {
-//         const [results] = await connection.query(sql, values);
-//         return results;
-//     } catch (err) {
-//         return err;
-//     } finally {
-//         if (connection) {
-//             connection.release();
-//         }
-//     }
-// };
 
-const result = await pool.query("SELECT * FROM users")
-console.log(result);
+const query = async (sql, values) => {
+    const connection = await pool.getConnection();
+    try {
+        const [results] = await connection.query(sql, values);
+        return results;
+    } catch (err) {
+        return err;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
 
-export default pool;
-// export default query;
+
+export default query;
 
