@@ -30,7 +30,8 @@ const query = async (sql, values) => {
         const [results] = await connection.query(sql, values);
         return results;
     } catch (err) {
-        return err;
+         console.error('error executing query:', err);
+         throw err;
     } finally {
         if (connection) {
             connection.release();
