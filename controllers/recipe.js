@@ -39,16 +39,19 @@ const recipeControllers = {
         }
     },
     postRecipe: async (req, res) => {
-        const {title, ingredients, instructions} = req.body
         try {
+        const {title, ingredients, instructions} = req.body;
+        const userEmail = req.user.email;
+    
         if(!title || !ingredients || !instructions){
             res.status(401).json({success: false, message: 'Fill out all required fields'})
         } 
+
         const postRecipeQuery = `
-        INSERT INTO recipes (title, ingredients, instructions)
-        VALUES(?,?,?)
+        INSERT INTO recipes (title, ingredients, instructions,userEmail)
+        VALUES(?,?,?,?)
         `
-        const result = await query(postRecipeQuery, [title,ingredients,instructions])
+        const result = await query(postRecipeQuery, [title,ingredients,instructions, userEmail])
         res.status(200).json({success: true, newAddedRecipe: result})
     }catch (error){
         console.error(error)

@@ -32,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+
 // Serve static files
 app.use(express.static(path.join(PATH, 'public')));
 

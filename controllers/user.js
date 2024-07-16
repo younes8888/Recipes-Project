@@ -8,7 +8,7 @@ import hashPassword from '../utils/hashPassword.js';
 import query from '../config/db.js';
 
 
-const secretKey = process.env.SECRET_KEY;
+// const secretKey = process.env.SECRET_KEY;
 
 const userControllers = {
         getAllUsers: async (req, res) => {
@@ -112,7 +112,10 @@ const userControllers = {
             const passwordMatch = await matchPasswords(password, user.password);
            
             if(passwordMatch){
-                const token = jwt.sign({email}, secretKey, {expiresIn: '1h'})
+                const token = jwt.sign({email}, process.env.SECRET_KEY, {expiresIn: '1h'})
+               res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: 8000000 })
                 return res.status(200).json({message: 'Logged in successfully', token})
             }   else {
                 return res.status(401).send({error: 'Invalid email or password'});
